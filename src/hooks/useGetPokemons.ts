@@ -4,7 +4,10 @@ import gql from 'graphql-tag';
 
 export type Pokemon = {
   id: string;
+  number: number;
   name: string;
+  types: [];
+  image: string;
 };
 
 export type PokemonOption = {
@@ -16,7 +19,10 @@ export const GET_POKEMONS = gql`
   query pokemons($first: Int!) {
     pokemons(first: $first) {
       id
+      number
       name
+      types
+      image
     }
   }
 `;
@@ -31,7 +37,7 @@ export const useGetPokemons = () => {
   const pokemons: Pokemon[] = useMemo(() => data?.pokemons || [], [data]);
 
   const pokemonOptions: PokemonOption[] = useMemo(
-    () => pokemons.map((p: Pokemon) => ({ value: p.id, label: p.name })),
+    () => pokemons.map((p: Pokemon) => ({ value: p.id, number: p.number, label: p.name, types: p.types, image: p.image })),
     [pokemons]
   );
 
