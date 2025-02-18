@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useGetPokemons } from '../../hooks/useGetPokemons';
 
@@ -6,10 +6,31 @@ export const PokemonList = () => {
   const classes = useStyles();
   const { pokemons, loading } = useGetPokemons();
 
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  }
+
+  const filteredPokemon = pokemons.filter((pkmn) => 
+    pkmn.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className={classes.root}>
+
+      <input
+        type="text"
+        placeholder="Search Pokemon"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        className={classes.searchInput}
+      />
+
       {loading && <div>Loading...</div>}
-      {pokemons.map((pkmn) => (
+
+
+      {filteredPokemon.map((pkmn) => (
         <div key={pkmn.id} className={classes.listItem}>
           <img src={pkmn.image} alt={pkmn.name} className={classes.pokemonImage}></img>
           <div className={classes.nameAndTypes}>
@@ -69,7 +90,19 @@ const useStyles = createUseStyles(
     number: {
       textAlign: 'right',
       fontSize: '1.2rem',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      padding: '20px'
+    },
+    searchInput: {
+      width: '100%',
+      padding: '10px',
+      marginBottom: '20px',
+      fontSize: '1rem',
+      border: '1px solid black',
+      borderRadius: '8px',
+      backgroundColor: 'white',
+      color: 'black',
+      textAlign: 'center'
     }
   },
   { name: 'PokemonList' }
