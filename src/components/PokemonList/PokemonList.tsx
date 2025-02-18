@@ -88,6 +88,8 @@ export const PokemonList = () => {
             <p>Types: {selectedPokemon.types?.join(', ')}</p>
             <p>Number: #{selectedPokemon.number}</p>
             <p>Classification: {pokemonDetails.classification}</p>
+            <p>Resistance: {pokemonDetails.resistant?.join(', ')}</p>
+            <p>MaxHP: {pokemonDetails.maxHP}</p>
             <button onClick={handleCloseModal} className={classes.closeButton}>
               Close
             </button>
